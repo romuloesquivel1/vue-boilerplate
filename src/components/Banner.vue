@@ -37,26 +37,3 @@ function removeBanner() {
     </div>
   </div>
 </template>
-
-<style>
-.banner {
-  animation: fadeInFromNone 0.2s ease-out;
-}
-
-@keyframes fadeInFromNone {
-  0% {
-    display: none;
-    opacity: 0;
-  }
-
-  1% {
-    display: block;
-    opacity: 0;
-  }
-
-  100% {
-    display: block;
-    opacity: 1;
-  }
-}
-</style>

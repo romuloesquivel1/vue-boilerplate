@@ -2,12 +2,19 @@
 import { ref } from "vue";
 import { useAuthStore } from "@/store";
 import { storeToRefs } from "pinia";
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
+const router = useRouter();
 
-const { isSignedIn } = storeToRefs(authStore);
+const { isSignedIn, loggedUser } = storeToRefs(authStore);
+const defaultNavs = [{ title: "HOME", to: { name: "home" } }];
+const navs = ref(defaultNavs);
 
-const navs = ref([{ title: "HOME", to: { name: "home" } }]);
+const onSignOut = async () => {
+  authStore.signOut();
+  await router.push({ name: "home" });
+};
 </script>
 
 <template>
@@ -16,18 +23,26 @@ const navs = ref([{ title: "HOME", to: { name: "home" } }]);
   >
     <nav class="flex container mx-auto justify-between">
       <div class="r">
-      <router-link
-        :to="nav.to"
-        v-for="(nav, ix) in navs"
-        :key="ix"
-        class="text-lg mx-4 font-bold hover:text-brand-300"
-        >{{ nav.title }}
-      </router-link>
+        <router-link
+          :to="nav.to"
+          v-for="(nav, ix) in navs"
+          :key="ix"
+          class="text-lg mx-4 font-bold hover:text-brand-300"
+          >{{ nav.title }}
+        </router-link>
       </div>
       <router-link :to="{ name: 'login' }" v-if="!isSignedIn"
                    class="text-lg mx-4 font-bold hover:text-brand-300"
       >LOGIN</router-link>
-      <p class="text-lg mx-4 font-bold" v-else>{{ $translate('greetings.hello') }}</p>
+      <div class="text-lg mx-4 font-bold" v-else>
+        <div class="flex items-center">
+          <p class="mr-4">{{ $translate('greetings.welcome') + ' ' + loggedUser.name }}</p>
+          <router-link :to="{ name: 'profile' }"
+            class="text-lg mx-4 font-bold hover:text-brand-300"
+          >PROFILE</router-link>
+          <a href="#" @click="onSignOut" class="text-lg mx-4 font-bold hover:text-brand-300">SIGN OUT</a>
+        </div>
+      </div>
     </nav>
   </div>
   <div class="container mx-auto">

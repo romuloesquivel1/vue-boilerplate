@@ -12,16 +12,18 @@ const { banners } = storeToRefs(bannerStore);
 
 <template>
   <Symbols/>
-  <div id="banners" class="sticky top-[0] flex flex-col items-center z-[99]">
-    <div class="absolute flex flex-col mt-4">
+
+  <div id="banners" class="sticky flex flex-col items-center z-[99]">
+    <div class="fixed bottom-0 right-0 flex flex-col mb-4">
       <Banner
-          class="mb-4"
-          v-for="banner in banners"
-          :key="banner.id"
-          :banner="banner"
+        class="mb-4"
+        v-for="banner in banners"
+        :key="banner.id"
+        :banner="banner"
       />
     </div>
   </div>
+
   <router-view/>
 </template>
 

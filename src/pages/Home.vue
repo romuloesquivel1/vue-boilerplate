@@ -29,9 +29,10 @@ postsStore.getPosts({})
       <Loader/>
     </div>
     <Transition name="fade">
-      <div class="flex flex-col items-center" v-if="posts.length">
+      <div class="flex flex-col items-center">
         <h3 class="text-5xl font-bold">Posts</h3>
-        <div class="flex flex-col w-[900px] mt-4 mb-4">
+        <div v-if="loading">Loading posts...</div>
+        <div v-else class="flex flex-col w-[900px] mt-4 mb-4">
           <PostItem
               class="home-post"
               v-for="(post, ix) in posts"

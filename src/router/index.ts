@@ -34,6 +34,14 @@ const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/profile",
+        name: "profile",
+        component: async () => import("../pages/Profile.vue"),
+        meta: {
+          title: "Profile - VB",
+        },
+      },
     ],
   },
   {
@@ -65,8 +73,9 @@ router.beforeEach(async to => {
   const bannerStore = useBannerStore();
 
   if (to.meta.requiresAuth === true && !isSignedIn) {
-    bannerStore.addBanner("error", "Login is required");
-    return { name: "login" };
+    const id_banner = bannerStore.addBanner("error", "Login is required", 10000);
+    console.log("id_banner", id_banner);
+    return { name: "login", query: { id_banner } };
   } else if (to.meta.skipWhenAuthed === true && isSignedIn) {
     return { name: "home" };
   } else {
